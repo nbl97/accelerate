@@ -185,6 +185,9 @@ def launch_command_parser(subparsers=None):
         "--num_machines", type=int, default=None, help="The total number of machines used in this training."
     )
     resource_args.add_argument(
+        "--num_processes_per_node", type=int, default=None, help="The total number of processes in each node."
+    )
+    resource_args.add_argument(
         "--num_cpu_threads_per_process",
         type=int,
         default=None,

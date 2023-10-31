@@ -107,12 +107,16 @@ def prepare_multi_gpu_env(args: argparse.Namespace) -> Dict[str, str]:
     """
     Prepares and returns an environment with the correct multi-GPU environment variables.
     """
+    num_processes_per_node = getattr(args, "num_processes_per_node")
     num_processes = getattr(args, "num_processes")
     num_machines = getattr(args, "num_machines")
     main_process_ip = getattr(args, "main_process_ip")
     main_process_port = getattr(args, "main_process_port")
     if num_machines > 1:
-        setattr(args, "nproc_per_node", str(num_processes // num_machines))
+        if num_processes_per_node is not None:
+            setattr(args, "nproc_per_node", str(num_processes_per_node))
+        else:
+            setattr(args, "nproc_per_node", str(num_processes // num_machines))
         setattr(args, "nnodes", str(num_machines))
         setattr(args, "node_rank", int(args.machine_rank))
         if getattr(args, "same_network", False):
